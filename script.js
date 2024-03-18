@@ -4,17 +4,13 @@
     'images/new-batmanjpg.jpg',
     'images/oppenheimer-poster.jpeg',
     'images/tenet.png',
-    // Add more image paths as needed
   ];
   const doors = document.querySelectorAll('.door');
-  let imageQueue = [];
 
   document.querySelector('#spinner').addEventListener('click', spin);
   document.querySelector('#reseter').addEventListener('click', init);
 
   function init(firstInit = true, groups = 1, duration = 1) {
-    imageQueue = [...items];
-
     for (const door of doors) {
       if (firstInit) {
         door.dataset.spinned = '0';
@@ -24,14 +20,17 @@
 
       const boxes = door.querySelector('.boxes');
       const boxesClone = boxes.cloneNode(false);
-      const pool = ['❓'];
+      const pool = ['images/noimage.png'];
 
       if (!firstInit) {
         const arr = [];
         for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
-          arr.push(...imageQueue);
+          arr.push(...items);
         }
-        pool.push(...shuffle(arr));
+        const shuffledItems = shuffle(arr);
+        const uniqueItems = Array.from(new Set(shuffledItems));
+
+        pool.push(...uniqueItems);
 
         boxesClone.addEventListener(
           'transitionstart',
@@ -61,13 +60,9 @@
         box.classList.add('box');
         box.style.width = door.clientWidth + 'px';
         box.style.height = door.clientHeight + 'px';
-        if (pool[i] !== '❓') {
-          const image = new Image();
-          image.src = pool[i];
-          box.appendChild(image);
-        } else {
-          box.textContent = '❓';
-        }
+        const image = new Image();
+        image.src = pool[i];
+        box.appendChild(image);
         boxesClone.appendChild(box);
       }
       boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;

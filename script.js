@@ -8,13 +8,15 @@
     'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bptfVGEQuv6vDTIMVCHjJ9Dz8PX.jpg',
     'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
   ];
+  let shuffledItems = shuffle(items); // Shuffle the items array
   const doors = document.querySelectorAll('.door');
-  const usedItems = [];
 
   document.querySelector('#spinner').addEventListener('click', spin);
   document.querySelector('#reseter').addEventListener('click', init);
 
   function init(firstInit = true, groups = 1, duration = 1) {
+    shuffledItems = shuffle(items); // Shuffle the items array
+    let currentIndex = 0; // Initialize current index for assigning images
     for (const door of doors) {
       if (firstInit) {
         door.dataset.spinned = '0';
@@ -27,18 +29,8 @@
       const pool = ['images/noimage.png'];
 
       if (!firstInit) {
-        const arr = [];
-        for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
-          arr.push(...items);
-        }
-        const shuffledItems = shuffle(arr);
-        for (const item of shuffledItems) {
-          if (!usedItems.includes(item)) {
-            pool.push(item);
-            usedItems.push(item);
-            break;
-          }
-        }
+        pool.push(shuffledItems[currentIndex]);
+        currentIndex++;
 
         boxesClone.addEventListener(
           'transitionstart',

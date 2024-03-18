@@ -1,11 +1,15 @@
 (function () {
   const items = [
-    'images/interstellar.jpg',
-    'images/new-batmanjpg.jpg',
-    'images/oppenheimer-poster.jpeg',
-    'images/tenet.png',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bptfVGEQuv6vDTIMVCHjJ9Dz8PX.jpg',
+    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
   ];
   const doors = document.querySelectorAll('.door');
+  const usedItems = [];
 
   document.querySelector('#spinner').addEventListener('click', spin);
   document.querySelector('#reseter').addEventListener('click', init);
@@ -28,9 +32,13 @@
           arr.push(...items);
         }
         const shuffledItems = shuffle(arr);
-        const uniqueItems = Array.from(new Set(shuffledItems));
-
-        pool.push(...uniqueItems);
+        for (const item of shuffledItems) {
+          if (!usedItems.includes(item)) {
+            pool.push(item);
+            usedItems.push(item);
+            break;
+          }
+        }
 
         boxesClone.addEventListener(
           'transitionstart',
